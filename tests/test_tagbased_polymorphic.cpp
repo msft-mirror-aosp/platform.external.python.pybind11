@@ -12,12 +12,6 @@
 
 struct Animal
 {
-    // Make this type also a "standard" polymorphic type, to confirm that
-    // specializing polymorphic_type_hook using enable_if_t still works
-    // (https://github.com/pybind/pybind11/pull/2016/).
-    virtual ~Animal() = default;
-
-    // Enum for tag-based polymorphism.
     enum class Kind {
         Unknown = 0,
         Dog = 100, Labrador, Chihuahua, LastDog = 199,
@@ -117,7 +111,7 @@ namespace pybind11 {
         static const void *get(const itype *src, const std::type_info*& type)
         { type = src ? Animal::type_of_kind(src->kind) : nullptr; return src; }
     };
-} // namespace pybind11
+}
 
 TEST_SUBMODULE(tagbased_polymorphic, m) {
     py::class_<Animal>(m, "Animal")
